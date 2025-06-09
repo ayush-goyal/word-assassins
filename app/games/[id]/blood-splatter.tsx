@@ -1,4 +1,7 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 
 interface BloodSplatterProps {
   show: boolean;
@@ -13,6 +16,27 @@ const BLOOD_COLORS = [
 ];
 
 export function BloodSplatter({ show }: BloodSplatterProps) {
+  // Add global styles for blood effects only on client side
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .blood-drop {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      }
+      .blood-splatter {
+        clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Cleanup function to remove styles when component unmounts
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, []);
+
   // Create multiple blood drops with varying properties
   const drops = Array.from({ length: 25 }, (_, i) => ({
     id: i,
@@ -156,15 +180,3 @@ export function BloodSplatter({ show }: BloodSplatterProps) {
     </AnimatePresence>
   );
 }
-
-// Add global styles for blood effects
-const style = document.createElement("style");
-style.textContent = `
-  .blood-drop {
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  }
-  .blood-splatter {
-    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-  }
-`;
-document.head.appendChild(style);
