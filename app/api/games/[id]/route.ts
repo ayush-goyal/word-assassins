@@ -29,8 +29,10 @@ export async function GET(
       },
       include: {
         players: {
-          include: {
-            target: true,
+          omit: {
+            gameId: true,
+            targetId: true,
+            word: true,
           },
         },
       },
@@ -40,7 +42,21 @@ export async function GET(
       return NextResponse.json(null, { status: 404 });
     }
 
-    return NextResponse.json(game);
+    const currentPlayerTarget = await prisma.playerInGame.findUnique({
+      where: {
+        userId_gameId: {
+          userId: user.id,
+          gameId: game.id,
+        },
+      },
+    });
+
+    const response = {
+      ...game,
+      currentPlayerTarget,
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Error fetching game:", error);
     return NextResponse.json(

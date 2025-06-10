@@ -21,9 +21,8 @@ import axios from "axios";
 
 async function fetchGameData(gameId: string): Promise<
   Game & {
-    players: (PlayerInGame & {
-      target: PlayerInGame;
-    })[];
+    players: PlayerInGame[];
+    currentPlayerTarget: PlayerInGame;
   }
 > {
   const response = await axios.get(`/api/games/${gameId}`);
@@ -95,6 +94,7 @@ export default function GamePage({
   const currentPlayer = game.players.find(
     (player) => player.userId === user.id
   );
+  const currentPlayerTarget = game.currentPlayerTarget;
 
   return (
     <div className="flex-1 w-full max-w-3xl mx-auto p-4 space-y-8 mb-3">
@@ -118,8 +118,8 @@ export default function GamePage({
       </div>
 
       {game.status === GameStatus.ACTIVE &&
-        currentPlayer?.target &&
-        currentPlayer.target.status === PlayerStatus.ALIVE && (
+        currentPlayerTarget &&
+        currentPlayerTarget.status === PlayerStatus.ALIVE && (
           <Card>
             <CardHeader>
               <CardTitle>Your Target</CardTitle>
@@ -128,23 +128,23 @@ export default function GamePage({
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="space-y-1">
-                    <p className="font-medium">{currentPlayer.target.name}</p>
+                    <p className="font-medium">{currentPlayerTarget.name}</p>
                     <p className="text-sm text-muted-foreground">
                       Their word:{" "}
                       <span className="font-bold">
-                        {currentPlayer.target.word}
+                        {currentPlayerTarget.word}
                       </span>
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <Badge
                       variant={
-                        currentPlayer.target.status === PlayerStatus.ALIVE
+                        currentPlayerTarget.status === PlayerStatus.ALIVE
                           ? "default"
                           : "destructive"
                       }
                     >
-                      {currentPlayer.target.status}
+                      {currentPlayerTarget.status}
                     </Badge>
                   </div>
                 </div>
