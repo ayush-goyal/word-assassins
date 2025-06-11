@@ -22,7 +22,7 @@ import axios from "axios";
 async function fetchGameData(gameId: string): Promise<
   Game & {
     players: PlayerInGame[];
-    currentPlayerTarget: PlayerInGame;
+    currentPlayerTarget: PlayerInGame | null;
   }
 > {
   const response = await axios.get(`/api/games/${gameId}`);

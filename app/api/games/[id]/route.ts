@@ -30,7 +30,6 @@ export async function GET(
       include: {
         players: {
           omit: {
-            gameId: true,
             targetId: true,
             word: true,
           },
@@ -42,18 +41,25 @@ export async function GET(
       return NextResponse.json(null, { status: 404 });
     }
 
-    const currentPlayerTarget = await prisma.playerInGame.findUnique({
+    const currentPlayer = await prisma.playerInGame.findUnique({
       where: {
         userId_gameId: {
           userId: user.id,
           gameId: game.id,
         },
       },
+      include: {
+        target: {
+          omit: {
+            targetId: true,
+          },
+        },
+      },
     });
 
     const response = {
       ...game,
-      currentPlayerTarget,
+      currentPlayerTarget: currentPlayer?.target,
     };
 
     return NextResponse.json(response);
