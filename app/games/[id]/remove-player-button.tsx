@@ -4,7 +4,7 @@ import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 
 interface RemovePlayerButtonProps {
@@ -18,7 +18,7 @@ export function RemovePlayerButton({
   playerId,
   currentPlayerId,
 }: RemovePlayerButtonProps) {
-  const router = useRouter();
+  const utils = useQueryClient();
   const { toast } = useToast();
 
   const { mutate: removePlayer, isLoading } = useMutation({
@@ -32,7 +32,7 @@ export function RemovePlayerButton({
       toast({
         title: "Player removed from game",
       });
-      router.refresh();
+      utils.invalidateQueries(["game", gameId]);
     },
     onError: (error: any) => {
       toast({

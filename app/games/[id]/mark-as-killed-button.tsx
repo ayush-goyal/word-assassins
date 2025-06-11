@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +20,7 @@ import {
 import { BloodSplatter } from "./blood-splatter";
 
 export default function MarkAsKilledButton({ gameId }: { gameId: string }) {
-  const router = useRouter();
+  const utils = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [showBloodSplatter, setShowBloodSplatter] = useState(false);
   const toast = useToast();
@@ -43,7 +43,7 @@ export default function MarkAsKilledButton({ gameId }: { gameId: string }) {
         description: "You will be removed from the game",
         variant: "default",
       });
-      router.refresh();
+      utils.invalidateQueries(["game", gameId]);
     },
     onError: (error: any) => {
       toast.toast({

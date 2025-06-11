@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,7 +31,7 @@ export default function RedrawWordButton({
   game: GameWithPlayers;
   currentPlayer: PlayerInGame;
 }) {
-  const router = useRouter();
+  const utils = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
@@ -57,7 +57,7 @@ export default function RedrawWordButton({
         description: `Your new word is: ${data.newWord}`,
         variant: "default",
       });
-      router.refresh();
+      utils.invalidateQueries(["game", game.id]);
     },
     onError: (error: any) => {
       toast.toast({
