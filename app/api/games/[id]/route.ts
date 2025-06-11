@@ -33,6 +33,9 @@ export async function GET(
             targetId: true,
             word: true,
           },
+          orderBy: {
+            createdAt: "asc",
+          },
         },
       },
     });
