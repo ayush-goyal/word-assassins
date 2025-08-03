@@ -17,12 +17,43 @@ import {
 } from "lucide-react";
 import Markdown from "react-markdown";
 
-export const dynamic = "force-dynamic";
-
 interface PostPageProps {
   params: Promise<{
     slug: string[];
   }>;
+}
+
+export async function generateStaticParams() {
+  return getAllPostSlugs();
+}
+
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+
+  if (!post) {
+    return {};
+  }
+
+  return {
+    title: post.title,
+    description: post.description,
+    authors: post.authors.map((author) => ({
+      name: author,
+    })),
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
+  };
 }
 
 function formatAuthors(authors: string[]): string {
@@ -131,37 +162,4 @@ export default async function PostPage({ params }: PostPageProps) {
       </div>
     </article>
   );
-}
-
-export async function generateMetadata({
-  params,
-}: PostPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getPostBySlug(slug);
-
-  if (!post) {
-    return {};
-  }
-
-  return {
-    title: post.title,
-    description: post.description,
-    authors: post.authors.map((author) => ({
-      name: author,
-    })),
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.description,
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  return getAllPostSlugs();
 }
