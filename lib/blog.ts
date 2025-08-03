@@ -22,9 +22,7 @@ export function getAllPostSlugs() {
   const fileNames = fs.readdirSync(postsDirectory);
   return fileNames.map((fileName) => {
     return {
-      params: {
-        slug: fileName.replace(/\.md$/, "").split("/"),
-      },
+      slug: fileName.replace(/\.md$/, "").split("/"),
     };
   });
 }
@@ -54,7 +52,7 @@ export function getPostBySlug(slugs: string[]): Post | null {
 export function getAllPosts(): Post[] {
   const slugs = getAllPostSlugs();
   const posts = slugs
-    .map((slug) => getPostBySlug(slug.params.slug))
+    .map((slug) => getPostBySlug(slug.slug))
     .filter((post): post is Post => post !== null)
     // Sort posts by date in descending order
     .sort((a, b) => (b.date > a.date ? 1 : -1));
