@@ -207,17 +207,17 @@ export default function GamePage({
                             {player.status}
                           </Badge>
                         )}
-                      {game.status !== GameStatus.WAITING &&
-                        !game.hideLeaderboard && (
-                          <Badge
-                            variant="secondary"
-                            className="text-xs flex items-center gap-1"
-                          >
-                            <Sword className="w-3 h-3" />
-                            {player.kills}{" "}
-                            {player.kills === 1 ? "Kill" : "Kills"}
-                          </Badge>
-                        )}
+                      {((!game.hideLeaderboard &&
+                        game.status === GameStatus.ACTIVE) ||
+                        game.status === GameStatus.FINISHED) && (
+                        <Badge
+                          variant="secondary"
+                          className="text-xs flex items-center gap-1"
+                        >
+                          <Sword className="w-3 h-3" />
+                          {player.kills} {player.kills === 1 ? "Kill" : "Kills"}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                   {game.status === GameStatus.WAITING && isCreator && (
