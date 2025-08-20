@@ -194,27 +194,30 @@ export default function GamePage({
                           Host
                         </Badge>
                       )}
-                      {game.status === GameStatus.ACTIVE && (
-                        <Badge
-                          variant={
-                            player.status === PlayerStatus.ALIVE
-                              ? "default"
-                              : "destructive"
-                          }
-                          className="text-xs"
-                        >
-                          {player.status}
-                        </Badge>
-                      )}
-                      {game.status !== GameStatus.WAITING && (
-                        <Badge
-                          variant="secondary"
-                          className="text-xs flex items-center gap-1"
-                        >
-                          <Sword className="w-3 h-3" />
-                          {player.kills} {player.kills === 1 ? "Kill" : "Kills"}
-                        </Badge>
-                      )}
+                      {game.status === GameStatus.ACTIVE &&
+                        !game.hideLeaderboard && (
+                          <Badge
+                            variant={
+                              player.status === PlayerStatus.ALIVE
+                                ? "default"
+                                : "destructive"
+                            }
+                            className="text-xs"
+                          >
+                            {player.status}
+                          </Badge>
+                        )}
+                      {game.status !== GameStatus.WAITING &&
+                        !game.hideLeaderboard && (
+                          <Badge
+                            variant="secondary"
+                            className="text-xs flex items-center gap-1"
+                          >
+                            <Sword className="w-3 h-3" />
+                            {player.kills}{" "}
+                            {player.kills === 1 ? "Kill" : "Kills"}
+                          </Badge>
+                        )}
                     </div>
                   </div>
                   {game.status === GameStatus.WAITING && isCreator && (

@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { gameName, playerName, redrawsAlwaysAllowed } = await request.json();
+    const { gameName, playerName, redrawsAlwaysAllowed, hideLeaderboard } = await request.json();
 
     if (!gameName) {
       return NextResponse.json(
@@ -39,6 +39,7 @@ export async function POST(request: Request) {
         joinCode: generateGameCode(),
         creatorId: user.id,
         redrawsAlwaysAllowed: Boolean(redrawsAlwaysAllowed),
+        hideLeaderboard: Boolean(hideLeaderboard),
         players: {
           create: {
             userId: user.id,

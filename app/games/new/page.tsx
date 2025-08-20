@@ -30,6 +30,7 @@ const formSchema = z.object({
   gameName: z.string().min(2, "Game name must be at least 2 characters"),
   playerName: z.string().min(2, "Name must be at least 2 characters"),
   redrawsAlwaysAllowed: z.boolean().default(false),
+  hideLeaderboard: z.boolean().default(false),
 });
 
 export default function CreateGamePage() {
@@ -39,6 +40,7 @@ export default function CreateGamePage() {
       gameName: "",
       playerName: "",
       redrawsAlwaysAllowed: false,
+      hideLeaderboard: false,
     },
   });
   const router = useRouter();
@@ -129,7 +131,28 @@ export default function CreateGamePage() {
                       <FormLabel>Allow word redraws after kill</FormLabel>
                       <p className="text-sm text-muted-foreground">
                         If checked, players can redraw their targets' words even
-                        after kills have occurred.
+                        after kills have occurred
+                      </p>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="hideLeaderboard"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Hide player leaderboard</FormLabel>
+                      <p className="text-sm text-muted-foreground">
+                        If checked, players won't see who's alive/dead during
+                        the game, adding <i>mystery</i>
                       </p>
                     </div>
                   </FormItem>

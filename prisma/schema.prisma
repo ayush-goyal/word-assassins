@@ -29,6 +29,7 @@ model Game {
   winnerId             String?        @unique
   winner               PlayerInGame?  @relation("GameWinner", fields: [winnerId], references: [id])
   redrawsAlwaysAllowed Boolean        @default(false)
+  hideLeaderboard      Boolean        @default(false)
   createdAt            DateTime       @default(now())
   updatedAt            DateTime       @updatedAt
 }
