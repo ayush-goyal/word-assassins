@@ -1,14 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-export const updateSession = async (request: NextRequest) => {
-  // Create an unmodified response
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
-
+export const updateSession = async (
+  request: NextRequest,
+  response: NextResponse
+) => {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -21,9 +17,6 @@ export const updateSession = async (request: NextRequest) => {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          response = NextResponse.next({
-            request,
-          });
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           );
@@ -38,15 +31,22 @@ export const updateSession = async (request: NextRequest) => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // List of paths that require authentication
+  // List of paths that require authentication (with locale support)
   const protectedPaths = ["/dashboard", "/games", "/account"];
+  const pathname = request.nextUrl.pathname;
+
+  // Remove locale prefix if present to check protected paths
+  const pathWithoutLocale = pathname.replace(/^\/(en|es)/, "") || "/";
+
   if (
     !user &&
-    protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
+    protectedPaths.some((path) => pathWithoutLocale.startsWith(path))
   ) {
+    // Extract locale from pathname
+    const locale = pathname.match(/^\/(en|es)/)?.[1] || "en";
     return NextResponse.redirect(
       new URL(
-        `/sign-in?redirectTo=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`,
+        `/${locale}/sign-in?redirectTo=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`,
         request.url
       )
     );

@@ -2,6 +2,7 @@ import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { createClient } from "@/utils/supabase/server";
 import { Button } from "./ui/button";
 import { ThemeSwitcher } from "./theme-switcher";
+import { LanguageSwitcher } from "./language-switcher";
 import { Crosshair, LayoutDashboard, Menu } from "lucide-react";
 import {
   Sheet,
@@ -11,18 +12,20 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { Link, redirect } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 async function signOutAction() {
   "use server";
   const supabase = await createClient();
   await supabase.auth.signOut();
   revalidatePath("/");
-  redirect("/sign-in");
+  redirect({ href: "/sign-in", locale: "en" });
 }
 
 export default async function Header() {
   const supabase = await createClient();
+  const t = await getTranslations('navigation');
 
   const {
     data: { user },
@@ -31,10 +34,10 @@ export default async function Header() {
   const AuthButtons = () => (
     <div className="flex items-center gap-4">
       <Button asChild variant="ghost" size="sm">
-        <a href="/sign-in">Sign in</a>
+        <Link href="/sign-in">{t('signIn')}</Link>
       </Button>
       <Button asChild size="sm">
-        <a href="/sign-up">Sign up</a>
+        <Link href="/sign-up">{t('signUp')}</Link>
       </Button>
     </div>
   );
@@ -42,17 +45,17 @@ export default async function Header() {
   const UserMenu = () => (
     <div className="flex items-center gap-4">
       <Button asChild variant="ghost" size="sm" className="hidden md:flex">
-        <a href="/dashboard" className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2">
           <LayoutDashboard className="h-4 w-4" />
-          <span>Dashboard</span>
-        </a>
+          <span>{t('dashboard')}</span>
+        </Link>
       </Button>
       <p className="text-sm text-muted-foreground hidden sm:block">
         {user?.email}
       </p>
       <form action={signOutAction} className="hidden md:block">
         <Button type="submit" variant="outline" size="sm">
-          Sign out
+          {t('signOut')}
         </Button>
       </form>
     </div>
@@ -62,13 +65,14 @@ export default async function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo section */}
-        <a href="/" className="flex items-center gap-2 hover:opacity-90">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-90">
           <Crosshair className="w-6 h-6 text-primary" />
           <span className="font-bold text-lg">Word Assassins</span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-4">
+          <LanguageSwitcher />
           <ThemeSwitcher />
           {!hasEnvVars ? (
             <Button disabled variant="outline" size="sm">
@@ -82,7 +86,8 @@ export default async function Header() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center gap-4">
+        <div className="md:hidden flex items-center gap-2">
+          <LanguageSwitcher />
           <ThemeSwitcher />
           <Sheet>
             <SheetTrigger asChild>
@@ -108,13 +113,13 @@ export default async function Header() {
                     </div>
                     <div className="flex flex-col gap-2">
                       <Button asChild variant="ghost" size="sm">
-                        <a
+                        <Link
                           href="/dashboard"
                           className="flex items-center gap-2"
                         >
                           <LayoutDashboard className="h-4 w-4" />
-                          <span>Dashboard</span>
-                        </a>
+                          <span>{t('dashboard')}</span>
+                        </Link>
                       </Button>
                       <form action={signOutAction}>
                         <Button
@@ -123,7 +128,7 @@ export default async function Header() {
                           size="sm"
                           className="w-full"
                         >
-                          Sign out
+                          {t('signOut')}
                         </Button>
                       </form>
                     </div>
@@ -136,10 +141,10 @@ export default async function Header() {
                       size="sm"
                       className="w-full"
                     >
-                      <a href="/sign-in">Sign in</a>
+                      <Link href="/sign-in">{t('signIn')}</Link>
                     </Button>
                     <Button asChild size="sm" className="w-full">
-                      <a href="/sign-up">Sign up</a>
+                      <Link href="/sign-up">{t('signUp')}</Link>
                     </Button>
                   </div>
                 )}

@@ -3,8 +3,9 @@ import { Card } from "@/components/ui/card";
 import * as motion from "motion/react-client";
 import { GAME_INSTRUCTIONS } from "@/lib/game-instructions";
 import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const cardVariants = {
   initial: { opacity: 0, y: 20 },
@@ -17,7 +18,14 @@ const cardVariants = {
   },
 };
 
-export default async function LandingPage() {
+export default async function LandingPage({ 
+  params 
+}: { 
+  params: Promise<{ locale: string }> 
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations('home');
   const supabase = await createClient();
   const {
     data: { user },
@@ -39,7 +47,7 @@ export default async function LandingPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-6xl font-bold tracking-tighter"
           >
-            Word Assassins
+            {t('title')}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -47,9 +55,7 @@ export default async function LandingPage() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg sm:text-xl text-muted-foreground max-w-[42rem] mx-auto"
           >
-            The ultimate social deduction game that combines stealth, strategy,
-            and vocabulary. Eliminate your targets, stay alive, and become the
-            last assassin standing.
+            {t('subtitle')}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +65,7 @@ export default async function LandingPage() {
           >
             <Button size="lg" asChild>
               <Link href={user ? "/dashboard" : "/sign-up"} className="gap-2">
-                Start Playing
+                {t('startPlaying')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
@@ -80,7 +86,7 @@ export default async function LandingPage() {
           transition={{ duration: 0.5, delay: 1.4 }}
           className="text-3xl font-bold text-center mb-12"
         >
-          Quick Overview
+          {t('quickOverview')}
         </motion.h2>
         <motion.div
           initial={{ opacity: 0 }}
@@ -92,21 +98,18 @@ export default async function LandingPage() {
           {[
             {
               icon: <Users className="h-6 w-6 text-primary" />,
-              title: "Join a Game",
-              description:
-                "Create or join a game with your friends. Each player gets a secret word and target.",
+              title: t('joinGameTitle'),
+              description: t('joinGameDescription'),
             },
             {
               icon: <Target className="h-6 w-6 text-primary" />,
-              title: "Hunt Your Target",
-              description:
-                "Trick your target into saying their secret word. Be sneaky - it could take days!",
+              title: t('huntTargetTitle'),
+              description: t('huntTargetDescription'),
             },
             {
               icon: <Shield className="h-6 w-6 text-primary" />,
-              title: "Stay Alive",
-              description:
-                "Watch what you say - someone's trying to make you say your secret word!",
+              title: t('stayAliveTitle'),
+              description: t('stayAliveDescription'),
             },
           ].map((item, index) => (
             <motion.div
@@ -141,7 +144,7 @@ export default async function LandingPage() {
           transition={{ duration: 0.5 }}
           className="text-3xl font-bold text-center mb-4"
         >
-          How to Play
+          {t('howToPlay')}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -150,7 +153,7 @@ export default async function LandingPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto"
         >
-          A simple game of deception, strategy, and careful conversation
+          {t('howToPlaySubtitle')}
         </motion.p>
 
         <motion.div
