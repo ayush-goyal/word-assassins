@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
-import { buildRedirectUrl } from "../utils";
+import { buildRedirectUrl } from "@/utils/auth";
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email address"),

@@ -25,7 +25,7 @@ async function signOutAction() {
 
 export default async function Header() {
   const supabase = await createClient();
-  const t = await getTranslations('navigation');
+  const t = await getTranslations("navigation");
 
   const {
     data: { user },
@@ -34,10 +34,10 @@ export default async function Header() {
   const AuthButtons = () => (
     <div className="flex items-center gap-4">
       <Button asChild variant="ghost" size="sm">
-        <Link href="/sign-in">{t('signIn')}</Link>
+        <Link href="/sign-in">{t("signIn")}</Link>
       </Button>
       <Button asChild size="sm">
-        <Link href="/sign-up">{t('signUp')}</Link>
+        <Link href="/sign-up">{t("signUp")}</Link>
       </Button>
     </div>
   );
@@ -47,7 +47,7 @@ export default async function Header() {
       <Button asChild variant="ghost" size="sm" className="hidden md:flex">
         <Link href="/dashboard" className="flex items-center gap-2">
           <LayoutDashboard className="h-4 w-4" />
-          <span>{t('dashboard')}</span>
+          <span>{t("dashboard")}</span>
         </Link>
       </Button>
       <p className="text-sm text-muted-foreground hidden sm:block">
@@ -55,7 +55,7 @@ export default async function Header() {
       </p>
       <form action={signOutAction} className="hidden md:block">
         <Button type="submit" variant="outline" size="sm">
-          {t('signOut')}
+          {t("signOut")}
         </Button>
       </form>
     </div>
@@ -118,7 +118,7 @@ export default async function Header() {
                           className="flex items-center gap-2"
                         >
                           <LayoutDashboard className="h-4 w-4" />
-                          <span>{t('dashboard')}</span>
+                          <span>{t("dashboard")}</span>
                         </Link>
                       </Button>
                       <form action={signOutAction}>
@@ -128,7 +128,7 @@ export default async function Header() {
                           size="sm"
                           className="w-full"
                         >
-                          {t('signOut')}
+                          {t("signOut")}
                         </Button>
                       </form>
                     </div>
@@ -141,10 +141,10 @@ export default async function Header() {
                       size="sm"
                       className="w-full"
                     >
-                      <Link href="/sign-in">{t('signIn')}</Link>
+                      <Link href="/sign-in">{t("signIn")}</Link>
                     </Button>
                     <Button asChild size="sm" className="w-full">
-                      <Link href="/sign-up">{t('signUp')}</Link>
+                      <Link href="/sign-up">{t("signUp")}</Link>
                     </Button>
                   </div>
                 )}

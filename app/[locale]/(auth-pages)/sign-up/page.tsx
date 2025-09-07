@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
-import { buildRedirectUrl } from "../utils";
+import { buildRedirectUrl } from "@/utils/auth";
 
 // Form validation schema
 const signUpSchema = z.object({

@@ -25,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
-import { buildRedirectUrl } from "../utils";
+import { buildRedirectUrl } from "@/utils/auth";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),

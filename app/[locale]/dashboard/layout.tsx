@@ -1,9 +1,8 @@
-import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { SignInRedirectHandler } from "@/components/auth/SignInRedirectHandler";
 import { routing } from "@/i18n/routing";
 
-export default async function GamesLayout({
+export default async function DashboardLayout({
   children,
   params,
 }: {
@@ -21,5 +20,5 @@ export default async function GamesLayout({
     return <SignInRedirectHandler locale={locale} />;
   }
 
-  return <Suspense>{children}</Suspense>;
+  return <>{children}</>;
 }
