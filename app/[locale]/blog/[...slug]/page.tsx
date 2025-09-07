@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
+import { routing } from "@/i18n/routing";
 import {
   ChevronLeft,
   Target,
@@ -19,12 +20,20 @@ import Markdown from "react-markdown";
 
 interface PostPageProps {
   params: Promise<{
+    locale: string;
     slug: string[];
   }>;
 }
 
 export async function generateStaticParams() {
-  return getAllPostSlugs();
+  const slugs = getAllPostSlugs();
+  
+  return routing.locales.flatMap((locale) =>
+    slugs.map((slugParam) => ({
+      locale,
+      slug: slugParam.slug,
+    }))
+  );
 }
 
 export async function generateMetadata({

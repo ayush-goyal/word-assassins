@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import * as motion from "motion/react-client";
 import { GAME_INSTRUCTIONS } from "@/lib/game-instructions";
 import { createClient } from "@/utils/supabase/server";
-import { Link } from "@/i18n/routing";
+import { Link, routing } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -18,14 +18,14 @@ const cardVariants = {
   },
 };
 
-export default async function LandingPage({ 
-  params 
-}: { 
-  params: Promise<{ locale: string }> 
+export default async function LandingPage({
+  params,
+}: {
+  params: Promise<{ locale: (typeof routing.locales)[number] }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('home');
+  const t = await getTranslations("home");
   const supabase = await createClient();
   const {
     data: { user },
@@ -47,7 +47,7 @@ export default async function LandingPage({
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-6xl font-bold tracking-tighter"
           >
-            {t('title')}
+            {t("title")}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -55,7 +55,7 @@ export default async function LandingPage({
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg sm:text-xl text-muted-foreground max-w-[42rem] mx-auto"
           >
-            {t('subtitle')}
+            {t("subtitle")}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -65,7 +65,7 @@ export default async function LandingPage({
           >
             <Button size="lg" asChild>
               <Link href={user ? "/dashboard" : "/sign-up"} className="gap-2">
-                {t('startPlaying')}
+                {t("startPlaying")}
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
@@ -86,7 +86,7 @@ export default async function LandingPage({
           transition={{ duration: 0.5, delay: 1.4 }}
           className="text-3xl font-bold text-center mb-12"
         >
-          {t('quickOverview')}
+          {t("quickOverview")}
         </motion.h2>
         <motion.div
           initial={{ opacity: 0 }}
@@ -98,18 +98,18 @@ export default async function LandingPage({
           {[
             {
               icon: <Users className="h-6 w-6 text-primary" />,
-              title: t('joinGameTitle'),
-              description: t('joinGameDescription'),
+              title: t("joinGameTitle"),
+              description: t("joinGameDescription"),
             },
             {
               icon: <Target className="h-6 w-6 text-primary" />,
-              title: t('huntTargetTitle'),
-              description: t('huntTargetDescription'),
+              title: t("huntTargetTitle"),
+              description: t("huntTargetDescription"),
             },
             {
               icon: <Shield className="h-6 w-6 text-primary" />,
-              title: t('stayAliveTitle'),
-              description: t('stayAliveDescription'),
+              title: t("stayAliveTitle"),
+              description: t("stayAliveDescription"),
             },
           ].map((item, index) => (
             <motion.div
@@ -144,7 +144,7 @@ export default async function LandingPage({
           transition={{ duration: 0.5 }}
           className="text-3xl font-bold text-center mb-4"
         >
-          {t('howToPlay')}
+          {t("howToPlay")}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -153,7 +153,7 @@ export default async function LandingPage({
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto"
         >
-          {t('howToPlaySubtitle')}
+          {t("howToPlaySubtitle")}
         </motion.p>
 
         <motion.div
