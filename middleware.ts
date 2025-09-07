@@ -14,15 +14,18 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except:
+     * - api routes
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
+     * - _vercel routes
+     * - favicon.* files
+     * - android-chrome.* files
+     * - apple-touch-icon.* files
      * - manifest.json
      * - robots.txt
      * - sitemap.xml
-     * Feel free to modify this pattern to include more paths.
+     * - files ending with .svg, .png, .jpg, .jpeg, .gif, .webp
      */
-    "/((?!_next/static|_next/image|favicon.*|android-chrome.*|apple-touch-icon.*|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api|_next/static|_next/image|_vercel|favicon.*|android-chrome.*|apple-touch-icon.*|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
