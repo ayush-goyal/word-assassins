@@ -7,7 +7,7 @@
     "signIn": "Anmelden",
     "signUp": "Registrieren",
     "signOut": "Abmelden",
-    "dashboard": "Dashboard",
+    "dashboard": "Übersicht",
     "blog": "Blog",
     "home": "Startseite",
     "games": "Spiele",
@@ -84,7 +84,7 @@
     }
   },
   "dashboard": {
-    "title": "Dashboard",
+    "title": "Übersicht",
     "yourGames": "Deine Spiele",
     "welcome": "Willkommen, {name}!",
     "activeGames": "Aktive Spiele",
@@ -324,4 +324,3 @@
     "setupRequired": "Einrichtung erforderlich"
   }
 }
-
