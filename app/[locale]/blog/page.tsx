@@ -1,8 +1,8 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/routing";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("blog");
@@ -12,8 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function BlogPage() {
-  const posts = getAllPosts();
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const posts = getAllPosts(locale);
   const t = await getTranslations("blog");
 
   return (

@@ -18,18 +18,31 @@ export interface Post {
 
 const postsDirectory = path.join(process.cwd(), "app/_posts");
 
-export function getAllPostSlugs() {
-  const fileNames = fs.readdirSync(postsDirectory);
-  return fileNames.map((fileName) => {
-    return {
-      slug: fileName.replace(/\.md$/, "").split("/"),
-    };
-  });
+function getPostsDirectoryForLocale(locale: string): string {
+  return path.join(postsDirectory, locale);
 }
 
-export function getPostBySlug(slugs: string[]): Post | null {
+export function getAllPostSlugs(locale: string = "en") {
+  const localeDirectory = getPostsDirectoryForLocale(locale);
+
+  if (!fs.existsSync(localeDirectory)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(localeDirectory);
+  return fileNames
+    .filter((fileName) => fileName.endsWith(".md"))
+    .map((fileName) => {
+      return {
+        slug: fileName.replace(/\.md$/, "").split("/"),
+      };
+    });
+}
+
+export function getPostBySlug(slugs: string[], locale: string): Post | null {
   const slug = slugs.join("/");
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  const localeDirectory = getPostsDirectoryForLocale(locale);
+  const fullPath = path.join(localeDirectory, `${slug}.md`);
 
   if (!fs.existsSync(fullPath)) {
     return null;
@@ -49,10 +62,10 @@ export function getPostBySlug(slugs: string[]): Post | null {
   };
 }
 
-export function getAllPosts(): Post[] {
-  const slugs = getAllPostSlugs();
+export function getAllPosts(locale: string): Post[] {
+  const slugs = getAllPostSlugs(locale);
   const posts = slugs
-    .map((slug) => getPostBySlug(slug.slug))
+    .map((slug) => getPostBySlug(slug.slug, locale))
     .filter((post): post is Post => post !== null)
     // Sort posts by date in descending order
     .sort((a, b) => (b.date > a.date ? 1 : -1));

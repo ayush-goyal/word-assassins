@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { Metadata } from "next";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/blog";
-import { routing } from "@/i18n/routing";
+import { routing, Link } from "@/i18n/routing";
 import {
   ChevronLeft,
   Target,
@@ -27,21 +26,20 @@ interface PostPageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
-  
-  return routing.locales.flatMap((locale) =>
-    slugs.map((slugParam) => ({
+  return routing.locales.flatMap((locale) => {
+    const slugs = getAllPostSlugs(locale);
+    return slugs.map((slugParam) => ({
       locale,
       slug: slugParam.slug,
-    }))
-  );
+    }));
+  });
 }
 
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const { slug, locale } = await params;
+  const post = getPostBySlug(slug, locale);
 
   if (!post) {
     return {};
@@ -66,24 +64,26 @@ export async function generateMetadata({
   };
 }
 
-function formatAuthors(authors: string[]): string {
+function formatAuthors(authors: string[], andText: string): string {
   if (!authors || authors.length === 0) return "";
   if (authors.length === 1) return authors[0];
-  if (authors.length === 2) return `${authors[0]} and ${authors[1]}`;
+  if (authors.length === 2) return `${authors[0]} ${andText} ${authors[1]}`;
 
   const lastAuthor = authors[authors.length - 1];
   const otherAuthors = authors.slice(0, -1).join(", ");
-  return `${otherAuthors}, and ${lastAuthor}`;
+  return `${otherAuthors}, ${andText} ${lastAuthor}`;
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const { slug, locale } = await params;
+  const post = getPostBySlug(slug, locale);
   const t = await getTranslations("blog");
 
   if (!post) {
     notFound();
   }
+
+  const andText = t("and");
 
   return (
     <article className="container max-w-4xl py-6 lg:py-10">
@@ -113,7 +113,9 @@ export default async function PostPage({ params }: PostPageProps) {
         </h1>
         {post.authors?.length ? (
           <div className="mt-4 flex items-center text-sm">
-            <p className="font-medium">{t("by")} {formatAuthors(post.authors)}</p>
+            <p className="font-medium">
+              {t("by")} {formatAuthors(post.authors, andText)}
+            </p>
           </div>
         ) : null}
       </div>
