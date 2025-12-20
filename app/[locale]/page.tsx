@@ -1,7 +1,7 @@
 import { ArrowRight, Shield, Target, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import * as motion from "motion/react-client";
-import { GAME_INSTRUCTIONS } from "@/lib/game-instructions";
+import { getGameInstructions } from "@/lib/game-instructions";
 import { createClient } from "@/utils/supabase/server";
 import { Link, routing } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,8 @@ export default async function LandingPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const gameInstructions = await getGameInstructions();
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] mx-6 max-w-screen-xl">
@@ -163,7 +165,7 @@ export default async function LandingPage({
           transition={{ duration: 0.8, delay: 0.4 }}
           className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {GAME_INSTRUCTIONS.map((instruction, index) => (
+          {gameInstructions.map((instruction, index) => (
             <motion.div
               key={index}
               variants={cardVariants}

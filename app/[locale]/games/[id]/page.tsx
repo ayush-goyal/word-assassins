@@ -12,7 +12,7 @@ import RedrawWordButton from "./redraw-word-button";
 import { Sword, Loader2, AlertCircle } from "lucide-react";
 import ReplayGameDialog from "./replay-game-dialog";
 import { RemovePlayerButton } from "./remove-player-button";
-import { GAME_INSTRUCTIONS } from "@/lib/game-instructions";
+import { useGameInstructions } from "@/lib/game-instructions";
 import CopyJoinLinkButton from "./copy-join-link-button";
 import { useQuery } from "react-query";
 import { use } from "react";
@@ -36,6 +36,7 @@ export default function GamePage({
 }) {
   const { id: gameId } = use(params);
   const { user } = useAuth();
+  const gameInstructions = useGameInstructions();
 
   const {
     data: game,
@@ -240,7 +241,7 @@ export default function GamePage({
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2">
-            {GAME_INSTRUCTIONS.map((instruction, index) => (
+            {gameInstructions.map((instruction, index) => (
               <div key={index} className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div

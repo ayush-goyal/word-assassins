@@ -24,22 +24,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
-
-const resetPasswordSchema = z
-  .object({
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(100, "Password must be less than 100 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+import { useTranslations } from "next-intl";
 
 export default function ResetPassword() {
   const router = useRouter();
+  const t = useTranslations('auth');
+  
+  const resetPasswordSchema = z
+    .object({
+      password: z
+        .string()
+        .min(8, t('errors.passwordTooShortReset'))
+        .max(100, t('errors.passwordTooLong')),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('errors.passwordsDontMatch'),
+      path: ["confirmPassword"],
+    });
 
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
@@ -62,14 +64,14 @@ export default function ResetPassword() {
 
     if (error) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to reset password",
+        title: t('errors.error'),
+        description: error.message || t('errors.passwordUpdateFailed'),
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Success",
-        description: "Your password has been reset successfully",
+        title: t('success.success'),
+        description: t('success.passwordResetSuccess'),
         variant: "default",
       });
       router.push("/dashboard");
@@ -80,9 +82,9 @@ export default function ResetPassword() {
     <div className="w-full h-full flex flex-1 items-center justify-center">
       <Card className="w-full max-w-md mx-4">
         <CardHeader>
-          <CardTitle className="text-2xl">Reset password</CardTitle>
+          <CardTitle className="text-2xl">{t('resetPassword')}</CardTitle>
           <CardDescription>
-            Please enter your new password below
+            {t('resetPasswordSubtitleAccount')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -96,11 +98,11 @@ export default function ResetPassword() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>New password</FormLabel>
+                    <FormLabel>{t('newPassword')}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Enter new password"
+                        placeholder={t('newPasswordPlaceholder')}
                         {...field}
                       />
                     </FormControl>
@@ -114,11 +116,11 @@ export default function ResetPassword() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm password</FormLabel>
+                    <FormLabel>{t('confirmPassword')}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Confirm your password"
+                        placeholder={t('confirmPasswordPlaceholder')}
                         {...field}
                       />
                     </FormControl>
@@ -131,10 +133,10 @@ export default function ResetPassword() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Resetting password...
+                    {t('resettingPassword')}
                   </>
                 ) : (
-                  "Reset password"
+                  t('resetPassword')
                 )}
               </Button>
             </form>

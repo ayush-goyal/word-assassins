@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,12 +26,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { buildRedirectUrl } from "@/utils/auth";
-
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
+import { useTranslations } from "next-intl";
 
 export default function ForgotPassword() {
+  const t = useTranslations('auth');
+  
+  const forgotPasswordSchema = z.object({
+    email: z.string().email(t('errors.invalidEmail')),
+  });
+  
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -54,14 +57,14 @@ export default function ForgotPassword() {
 
     if (error) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to send reset email",
+        title: t('errors.error'),
+        description: error.message || t('errors.resetLinkFailed'),
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Success",
-        description: "Password reset email sent. Please check your inbox.",
+        title: t('success.success'),
+        description: t('success.resetEmailSent'),
         variant: "default",
       });
       form.reset();
@@ -72,10 +75,9 @@ export default function ForgotPassword() {
     <div className="w-full mx-4 max-w-md">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Reset password</CardTitle>
+          <CardTitle className="text-2xl">{t('resetPassword')}</CardTitle>
           <CardDescription>
-            Enter your email address and we'll send you a link to reset your
-            password
+            {t('resetPasswordSubtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -89,10 +91,10 @@ export default function ForgotPassword() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('email')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="you@example.com"
+                        placeholder={t('emailPlaceholder')}
                         type="email"
                         autoComplete="email"
                         {...field}
@@ -106,10 +108,10 @@ export default function ForgotPassword() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending reset link...
+                    {t('sendingResetLink')}
                   </>
                 ) : (
-                  "Send reset link"
+                  t('sendResetLink')
                 )}
               </Button>
             </form>
@@ -117,12 +119,12 @@ export default function ForgotPassword() {
         </CardContent>
       </Card>
       <p className="text-center text-sm text-muted-foreground mt-6">
-        Remember your password?{" "}
+        {t('rememberPassword')}{" "}
         <Link
           href={buildRedirectUrl("/sign-in")}
           className="text-primary underline-offset-4 hover:underline"
         >
-          Sign in
+          {t('signIn')}
         </Link>
       </p>
     </div>
