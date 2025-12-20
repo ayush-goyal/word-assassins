@@ -2,25 +2,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { getAllPosts } from "@/lib/blog";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Latest news, updates, and stories from our team",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("blog");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function BlogPage() {
   const posts = getAllPosts();
+  const t = await getTranslations("blog");
 
   return (
     <div className="container max-w-4xl py-6 lg:py-10">
       <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
         <div className="flex-1 space-y-4">
           <h1 className="inline-block font-heading text-4xl font-semibold tracking-tight lg:text-5xl">
-            Blog
+            {t("title")}
           </h1>
-          <p className="text-xl text-muted-foreground">
-            Our latest news, updates, and stories.
-          </p>
+          <p className="text-xl text-muted-foreground">{t("description")}</p>
         </div>
       </div>
 
@@ -53,13 +56,13 @@ export default async function BlogPage() {
                 </p>
               )}
               <Link href={post.slug} className="absolute inset-0">
-                <span className="sr-only">View Article</span>
+                <span className="sr-only">{t("viewArticle")}</span>
               </Link>
             </article>
           ))}
         </div>
       ) : (
-        <p>Posts coming soon!</p>
+        <p>{t("postsComingSoon")}</p>
       )}
     </div>
   );

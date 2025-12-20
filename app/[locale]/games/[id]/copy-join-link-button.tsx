@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function CopyJoinLinkButton({ joinCode }: { joinCode: string }) {
   const [isCopied, setIsCopied] = useState(false);
+  const t = useTranslations("game");
 
   const copyToClipboard = async () => {
     const joinUrl = `${window.location.origin}/games/join?code=${joinCode}`;
@@ -32,12 +34,12 @@ export default function CopyJoinLinkButton({ joinCode }: { joinCode: string }) {
       {isCopied ? (
         <>
           <Check className="h-3.5 w-3.5 mr-1 text-green-500" />
-          Copied!
+          {t("copyJoinLinkCopied")}
         </>
       ) : (
         <>
           <Copy className="h-3.5 w-3.5 mr-1" />
-          Copy join link
+          {t("copyJoinLinkText")}
         </>
       )}
     </Button>

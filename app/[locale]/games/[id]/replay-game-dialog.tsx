@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "react-query";
+import { useTranslations } from "next-intl";
 
 interface ReplayGameDialogProps {
   gameId: string;
@@ -25,12 +26,12 @@ interface ReplayGameDialogProps {
 
 export default function ReplayGameDialog({
   gameId,
-  gameName,
 }: ReplayGameDialogProps) {
   const [open, setOpen] = useState(false);
   const [newGameName, setNewGameName] = useState("");
   const router = useRouter();
   const { toast } = useToast();
+  const t = useTranslations("game");
 
   const { mutate: replayGame, isLoading } = useMutation({
     mutationFn: async () => {
@@ -44,15 +45,15 @@ export default function ReplayGameDialog({
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || "Failed to replay game");
+        throw new Error(error.error || t("replayGameError"));
       }
 
       return response.json();
     },
     onSuccess: (data) => {
       toast({
-        title: "Game replayed successfully!",
-        description: "Redirecting to the new game...",
+        title: t("replayGameSuccess"),
+        description: t("replayGameSuccessDescription"),
       });
       setOpen(false);
       router.push(`/games/${data.id}`);
@@ -60,7 +61,7 @@ export default function ReplayGameDialog({
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to replay game",
+        title: t("replayGameError"),
         description: error.message,
         variant: "destructive",
       });
@@ -70,18 +71,17 @@ export default function ReplayGameDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Replay Game</Button>
+        <Button variant="outline">{t("replayGame")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Replay Game</DialogTitle>
+          <DialogTitle>{t("replayGame")}</DialogTitle>
           <DialogDescription>
-            Create a new game with the same players. The game will start in
-            waiting state.
+            {t("replayGameDescription")}
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 my-2">
-          <Label htmlFor="name">New Game Name</Label>
+          <Label htmlFor="name">{t("newGameName")}</Label>
           <Input
             id="name"
             value={newGameName}
@@ -97,7 +97,7 @@ export default function ReplayGameDialog({
             disabled={isLoading || !newGameName.trim()}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Replay Game
+            {t("replayGame")}
           </Button>
         </DialogFooter>
       </DialogContent>

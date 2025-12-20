@@ -97,7 +97,11 @@ export default async function DashboardPage() {
                         }
                         className="ml-2"
                       >
-                        {game.status}
+                        {game.status === GameStatus.WAITING
+                          ? t("gameStatus.waiting")
+                          : game.status === GameStatus.ACTIVE
+                            ? t("gameStatus.active")
+                            : t("gameStatus.completed")}
                       </Badge>
                     </CardTitle>
                   </CardHeader>

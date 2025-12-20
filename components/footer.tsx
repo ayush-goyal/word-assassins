@@ -3,15 +3,17 @@
 import { Heart } from "lucide-react";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 export async function Footer() {
   const currentYear = new Date().getFullYear();
+  const t = await getTranslations("footer");
 
   return (
     <footer className="w-full border-t bg-background">
       <div className="container flex flex-col items-center gap-2 py-4 text-sm text-muted-foreground">
         <p className="flex items-center gap-1">
-          Made with <Heart className="h-4 w-4 fill-current text-red-500" /> by{" "}
+          {t("madeWith")} <Heart className="h-4 w-4 fill-current text-red-500" /> {t("by")}{" "}
           <Link
             href="https://github.com/ayush-goyal"
             target="_blank"
@@ -20,10 +22,10 @@ export async function Footer() {
           >
             Ayush Goyal
           </Link>{" "}
-          in NYC
+          {t("inNYC")}
         </p>
         <div className="flex items-center text-center">
-          <p>© {currentYear} Glacier Labs. All rights reserved.</p>
+          <p>{t("copyright", { year: currentYear })}</p>
         </div>
         <Link
           href="https://github.com/ayush-goyal/word-assassins"
@@ -32,7 +34,7 @@ export async function Footer() {
           className="flex items-center gap-1 hover:text-foreground transition-colors"
         >
           <SiGithub size={16} />
-          <span>GitHub</span>
+          <span>{t("github")}</span>
         </Link>
       </div>
     </footer>

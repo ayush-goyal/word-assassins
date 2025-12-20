@@ -26,20 +26,24 @@ import { useMutation } from "react-query";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
-
-const formSchema = z.object({
-  joinCode: z
-    .string()
-    .length(4, "Join code must be exactly 4 characters")
-    .regex(/^[A-Z0-9]+$/, "Only letters and numbers are allowed"),
-  playerName: z.string().min(2, "Name must be at least 2 characters"),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from "next-intl";
 
 export default function JoinGamePage() {
+  const t = useTranslations("forms");
+  const tCommon = useTranslations("common");
+  const tErrors = useTranslations("errors");
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const formSchema = z.object({
+    joinCode: z
+      .string()
+      .length(4, t("validation.joinCodeLength"))
+      .regex(/^[A-Z0-9]+$/, t("validation.joinCodeFormat")),
+    playerName: z.string().min(2, t("validation.nameMinLength")),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -67,8 +71,8 @@ export default function JoinGamePage() {
     },
     onError: (error: any) => {
       toast({
-        title: "Error",
-        description: error.response?.data?.error || "Failed to join game",
+        title: tCommon("error"),
+        description: error.response?.data?.error || tErrors("somethingWentWrong"),
         variant: "destructive",
       });
     },
@@ -85,9 +89,9 @@ export default function JoinGamePage() {
     <div className="flex-1 w-full flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Join a Game</CardTitle>
+          <CardTitle>{t("joinAGame")}</CardTitle>
           <CardDescription>
-            Enter a game code to join an existing game
+            {t("enterGameCode")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -98,10 +102,10 @@ export default function JoinGamePage() {
                 name="joinCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Join Code</FormLabel>
+                    <FormLabel>{t("joinCode")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter 4-digit code"
+                        placeholder={t("enter4DigitCode")}
                         {...field}
                         autoComplete="off"
                         autoCorrect="off"
@@ -125,10 +129,10 @@ export default function JoinGamePage() {
                 name="playerName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Your Name</FormLabel>
+                    <FormLabel>{t("hostName")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your name"
+                        placeholder={t("enterYourName")}
                         {...field}
                         autoComplete="off"
                         autoCorrect="off"
@@ -143,10 +147,10 @@ export default function JoinGamePage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Joining...
+                    {t("joining")}
                   </>
                 ) : (
-                  "Join Game"
+                  t("joinGame")
                 )}
               </Button>
             </form>

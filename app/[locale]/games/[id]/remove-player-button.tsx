@@ -2,10 +2,10 @@
 
 import { X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
+import { useTranslations } from "next-intl";
 
 interface RemovePlayerButtonProps {
   gameId: string;
@@ -20,6 +20,7 @@ export function RemovePlayerButton({
 }: RemovePlayerButtonProps) {
   const utils = useQueryClient();
   const { toast } = useToast();
+  const t = useTranslations("game");
 
   const { mutate: removePlayer, isLoading } = useMutation({
     mutationFn: async () => {
@@ -30,14 +31,14 @@ export function RemovePlayerButton({
     },
     onSuccess: () => {
       toast({
-        title: "Player removed from game",
+        title: t("playerRemovedSuccess"),
       });
       utils.invalidateQueries(["game", gameId]);
     },
     onError: (error: any) => {
       toast({
-        title: "Failed to remove player",
-        description: error.response?.data?.error || "Failed to remove player",
+        title: t("playerRemoveError"),
+        description: error.response?.data?.error || t("playerRemoveError"),
         variant: "destructive",
       });
     },

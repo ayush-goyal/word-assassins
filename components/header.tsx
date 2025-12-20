@@ -26,6 +26,7 @@ async function signOutAction() {
 export default async function Header() {
   const supabase = await createClient();
   const t = await getTranslations("navigation");
+  const tLayout = await getTranslations("layout");
 
   const {
     data: { user },
@@ -76,7 +77,7 @@ export default async function Header() {
           <ThemeSwitcher />
           {!hasEnvVars ? (
             <Button disabled variant="outline" size="sm">
-              Setup required
+              {tLayout("setupRequired")}
             </Button>
           ) : user ? (
             <UserMenu />
@@ -97,12 +98,12 @@ export default async function Header() {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle>{tLayout("menu")}</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-4 mt-8">
                 {!hasEnvVars ? (
                   <Button disabled variant="outline" size="sm">
-                    Setup required
+                    {tLayout("setupRequired")}
                   </Button>
                 ) : user ? (
                   <div className="flex flex-col gap-3">

@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import {
@@ -18,12 +17,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { BloodSplatter } from "./blood-splatter";
+import { useTranslations } from "next-intl";
 
 export default function MarkAsKilledButton({ gameId }: { gameId: string }) {
   const utils = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [showBloodSplatter, setShowBloodSplatter] = useState(false);
   const toast = useToast();
+  const t = useTranslations("game");
+  const tCommon = useTranslations("common");
 
   const { mutate: markAsKilled } = useMutation({
     mutationFn: async () => {
@@ -39,16 +41,16 @@ export default function MarkAsKilledButton({ gameId }: { gameId: string }) {
     },
     onSuccess: () => {
       toast.toast({
-        title: "You have been marked as killed",
-        description: "You will be removed from the game",
+        title: t("markAsKilledSuccess"),
+        description: t("markAsKilledSuccessDescription"),
         variant: "default",
       });
       utils.invalidateQueries(["game", gameId]);
     },
     onError: (error: any) => {
       toast.toast({
-        title: "Failed to mark as killed",
-        description: error.response?.data?.error || "Failed to mark as killed",
+        title: t("markAsKilledError"),
+        description: error.response?.data?.error || t("markAsKilledError"),
         variant: "destructive",
       });
     },
@@ -63,24 +65,23 @@ export default function MarkAsKilledButton({ gameId }: { gameId: string }) {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" disabled={isLoading}>
-            {isLoading ? "Marking as killed..." : "Mark Yourself as Killed"}
+            {isLoading ? t("markingAsKilled") : t("markYourselfAsKilled")}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t("areYouSure")}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will mark you as killed and
-              remove you from the game.
+              {t("markAsKilledConfirm")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => markAsKilled()}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Yes, mark as killed
+              {t("yesMarkAsKilled")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

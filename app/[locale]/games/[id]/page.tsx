@@ -18,6 +18,7 @@ import { useQuery } from "react-query";
 import { use } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import axios from "axios";
+import { useTranslations } from "next-intl";
 
 async function fetchGameData(gameId: string): Promise<
   Game & {
@@ -37,6 +38,7 @@ export default function GamePage({
   const { id: gameId } = use(params);
   const { user } = useAuth();
   const gameInstructions = useGameInstructions();
+  const t = useTranslations("game");
 
   const {
     data: game,
@@ -55,7 +57,7 @@ export default function GamePage({
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
-            <p className="text-lg font-medium">Loading...</p>
+            <p className="text-lg font-medium">{t("loading")}</p>
           </CardContent>
         </Card>
       </div>
@@ -72,14 +74,13 @@ export default function GamePage({
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertCircle className="h-12 w-12 text-destructive mb-6" />
             <h2 className="text-xl font-semibold mb-2 text-destructive">
-              Error Loading Game
+              {t("errorLoading")}
             </h2>
             <p className="text-muted-foreground text-center">
               {(error as Error).message}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Please try refreshing the page or contact support if the problem
-              persists.
+              {t("refreshHint")}
             </p>
           </CardContent>
         </Card>
@@ -103,7 +104,9 @@ export default function GamePage({
         <div className="space-y-2">
           <GameStatusBadge status={game.status} />
           <h1 className="text-3xl font-bold">{game.name}</h1>
-          <p className="text-muted-foreground">Join Code: {game.joinCode}</p>
+          <p className="text-muted-foreground">
+            {t("joinCode")}: {game.joinCode}
+          </p>
           {game.status === GameStatus.WAITING && (
             <CopyJoinLinkButton joinCode={game.joinCode} />
           )}
@@ -123,7 +126,7 @@ export default function GamePage({
         currentPlayerTarget.status === PlayerStatus.ALIVE && (
           <Card>
             <CardHeader>
-              <CardTitle>Your Target</CardTitle>
+              <CardTitle>{t("yourTarget")}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -131,7 +134,7 @@ export default function GamePage({
                   <div className="space-y-1">
                     <p className="font-medium">{currentPlayerTarget.name}</p>
                     <p className="text-sm text-muted-foreground">
-                      Their word:{" "}
+                      {t("theirWord")}{" "}
                       <span className="font-bold">
                         {currentPlayerTarget.word}
                       </span>
@@ -145,7 +148,9 @@ export default function GamePage({
                           : "destructive"
                       }
                     >
-                      {currentPlayerTarget.status}
+                      {currentPlayerTarget.status === PlayerStatus.ALIVE
+                        ? t("alive")
+                        : t("eliminated")}
                     </Badge>
                   </div>
                 </div>
@@ -158,7 +163,7 @@ export default function GamePage({
         currentPlayer?.status === PlayerStatus.ALIVE && (
           <Card>
             <CardHeader>
-              <CardTitle>Actions</CardTitle>
+              <CardTitle>{t("actions")}</CardTitle>
             </CardHeader>
             <CardContent className="sm:items-center gap-4 flex sm:flex-row flex-col">
               <MarkAsKilledButton gameId={game.id} />
@@ -170,10 +175,10 @@ export default function GamePage({
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between">
-            <span>Game Members</span>
+            <span>{t("gameMembers")}</span>
             <Badge variant="outline">
               {game.players.length}{" "}
-              {game.players.length === 1 ? "Player" : "Players"}
+              {game.players.length === 1 ? t("player") : t("players")}
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -192,7 +197,7 @@ export default function GamePage({
                       {game.winnerId === player.id && <AnimatedCrown />}
                       {player.userId === game.creatorId && (
                         <Badge variant="secondary" className="text-xs">
-                          Host
+                          {t("host")}
                         </Badge>
                       )}
                       {game.status === GameStatus.ACTIVE &&
@@ -216,7 +221,8 @@ export default function GamePage({
                           className="text-xs flex items-center gap-1"
                         >
                           <Sword className="w-3 h-3" />
-                          {player.kills} {player.kills === 1 ? "Kill" : "Kills"}
+                          {player.kills}{" "}
+                          {player.kills === 1 ? t("kill") : t("kills")}
                         </Badge>
                       )}
                     </div>
@@ -237,7 +243,7 @@ export default function GamePage({
       {/* How to Play Section */}
       <Card>
         <CardHeader>
-          <CardTitle>How to Play</CardTitle>
+          <CardTitle>{t("howToPlay")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2">

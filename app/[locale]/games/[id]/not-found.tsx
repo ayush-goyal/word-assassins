@@ -1,15 +1,16 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
-export default function GameNotFound() {
+export default async function GameNotFound() {
+  const t = await getTranslations("errors");
+
   return (
     <div className="flex flex-col items-center justify-center flex-1 gap-4">
-      <h1 className="text-4xl font-bold">Game Not Found</h1>
-      <p className="text-muted-foreground">
-        The game you're looking for doesn't exist.
-      </p>
+      <h1 className="text-4xl font-bold">{t("gameNotFoundTitle")}</h1>
+      <p className="text-muted-foreground">{t("gameNotFoundDescription")}</p>
       <Button asChild>
-        <Link href="/">Back to Home</Link>
+        <Link href="/">{t("backToHome")}</Link>
       </Button>
     </div>
   );

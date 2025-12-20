@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Game, PlayerInGame, PlayerStatus } from "@prisma/client";
+import { useTranslations } from "next-intl";
 
 type GameWithPlayers = Game & {
   players: PlayerInGame[];
@@ -34,6 +34,8 @@ export default function RedrawWordButton({
   const utils = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const t = useTranslations("game");
+  const tCommon = useTranslations("common");
 
   const redraws = currentPlayer.redraws;
   const remainingRedraws = 2 - redraws;
@@ -53,16 +55,16 @@ export default function RedrawWordButton({
     },
     onSuccess: (data) => {
       toast.toast({
-        title: "Word redrawn successfully",
-        description: `Your new word is: ${data.newWord}`,
+        title: t("wordRedrawnSuccess"),
+        description: t("wordRedrawnSuccessDescription", { newWord: data.newWord }),
         variant: "default",
       });
       utils.invalidateQueries(["game", game.id]);
     },
     onError: (error: any) => {
       toast.toast({
-        title: "Failed to redraw word",
-        description: error.response?.data?.error || "Failed to redraw word",
+        title: t("wordRedrawError"),
+        description: error.response?.data?.error || t("wordRedrawError"),
         variant: "destructive",
       });
     },
@@ -72,14 +74,14 @@ export default function RedrawWordButton({
   });
 
   const getButtonText = () => {
-    if (isLoading) return "Redrawing...";
-    if (!redrawsAllowed) return "Redraws locked";
-    if (remainingRedraws <= 0) return "No redraws left";
+    if (isLoading) return t("redrawing");
+    if (!redrawsAllowed) return t("redrawsLocked");
+    if (remainingRedraws <= 0) return t("noRedrawsLeft");
     return (
       <>
-        Redraw Word{" "}
+        {t("redrawWord")}{" "}
         <Badge variant="secondary" className="ml-2">
-          {remainingRedraws} left
+          {remainingRedraws} {t("redrawLeft")}
         </Badge>
       </>
     );
@@ -87,17 +89,18 @@ export default function RedrawWordButton({
 
   const getDialogDescription = () => {
     if (remainingRedraws <= 0) {
-      return `You have used all your redraws for this game.`;
+      return t("redrawDescriptionNoRedraws");
     }
 
     if (!redrawsAllowed) {
-      return `Sorry, you can't redraw your word right now.`;
+      return t("redrawDescriptionLocked");
     }
 
+    const timeText = remainingRedraws === 1 ? t("time") : t("times");
     if (game.redrawsAlwaysAllowed) {
-      return `This will select a new random word for your target. You can only do this ${remainingRedraws} more ${remainingRedraws === 1 ? "time" : "times"}.`;
+      return t("redrawDescriptionAlwaysAllowed", { remainingRedraws, time: timeText });
     } else {
-      return `This will select a new random word for your target. You can only do this ${remainingRedraws} more ${remainingRedraws === 1 ? "time" : "times"}, and only before any kills have occurred in the game.`;
+      return t("redrawDescriptionBeforeKills", { remainingRedraws, time: timeText });
     }
   };
 
@@ -113,15 +116,15 @@ export default function RedrawWordButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("areYouSure")}</AlertDialogTitle>
           <AlertDialogDescription>
             {getDialogDescription()}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
           <AlertDialogAction onClick={() => redrawWord()}>
-            Yes, redraw word
+            {t("yesRedrawWord")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

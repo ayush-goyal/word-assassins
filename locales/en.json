@@ -55,12 +55,10 @@
     "backToSignIn": "Back to sign in",
     "updatePassword": "Update Password",
     "newPassword": "New password",
-    "confirmPassword": "Confirm password",
     "resetPasswordSubtitleAccount": "Please enter your new password below",
     "resettingPassword": "Resetting password...",
     "signingIn": "Signing in...",
     "creatingAccount": "Creating account...",
-    "sendingResetLink": "Sending...",
     "updating": "Updating...",
     "emailPlaceholder": "you@example.com",
     "passwordPlaceholder": "Enter password",
@@ -144,7 +142,58 @@
       "second": "2nd",
       "third": "3rd",
       "other": "{place}th"
-    }
+    },
+    "loading": "Loading...",
+    "errorLoading": "Error Loading Game",
+    "refreshHint": "Please try refreshing the page or contact support if the problem persists.",
+    "theirWord": "Their word:",
+    "actions": "Actions",
+    "gameMembers": "Game Members",
+    "host": "Host",
+    "player": "Player",
+    "kill": "Kill",
+    "kills": "Kills",
+    "howToPlay": "How to Play",
+    "status": {
+      "waiting": "Waiting",
+      "active": "Active",
+      "finished": "Finished"
+    },
+    "startGameSuccess": "Game started!",
+    "startGameSuccessDescription": "The game has been started successfully.",
+    "startGameError": "Failed to start game",
+    "starting": "Starting...",
+    "markAsKilledSuccess": "You have been marked as killed",
+    "markAsKilledSuccessDescription": "You will be removed from the game",
+    "markAsKilledError": "Failed to mark as killed",
+    "markYourselfAsKilled": "Mark Yourself as Killed",
+    "markingAsKilled": "Marking as killed...",
+    "areYouSure": "Are you sure?",
+    "markAsKilledConfirm": "This action cannot be undone. This will mark you as killed and remove you from the game.",
+    "yesMarkAsKilled": "Yes, mark as killed",
+    "wordRedrawnSuccess": "Word redrawn successfully",
+    "wordRedrawnSuccessDescription": "Your new word is: {newWord}",
+    "wordRedrawError": "Failed to redraw word",
+    "redrawing": "Redrawing...",
+    "redrawsLocked": "Redraws locked",
+    "noRedrawsLeft": "No redraws left",
+    "redrawLeft": "left",
+    "redrawDescriptionNoRedraws": "You have used all your redraws for this game.",
+    "redrawDescriptionLocked": "Sorry, you can't redraw your word right now.",
+    "redrawDescriptionAlwaysAllowed": "This will select a new random word for your target. You can only do this {remainingRedraws} more {time}.",
+    "redrawDescriptionBeforeKills": "This will select a new random word for your target. You can only do this {remainingRedraws} more {time}, and only before any kills have occurred in the game.",
+    "time": "time",
+    "times": "times",
+    "yesRedrawWord": "Yes, redraw word",
+    "playerRemovedSuccess": "Player removed from game",
+    "playerRemoveError": "Failed to remove player",
+    "replayGameDescription": "Create a new game with the same players. The game will start in waiting state.",
+    "newGameName": "New Game Name",
+    "replayGameSuccess": "Game replayed successfully!",
+    "replayGameSuccessDescription": "Redirecting to the new game...",
+    "replayGameError": "Failed to replay game",
+    "copyJoinLinkCopied": "Copied!",
+    "copyJoinLinkText": "Copy join link"
   },
   "gameInstructions": {
     "setup": "Setup",
@@ -160,7 +209,7 @@
     "tips": "Pro Tips",
     "tipsDescription": [
       "• Be patient - rushing makes you suspicious",
-      "• Context matters - make conversations natural", 
+      "• Context matters - make conversations natural",
       "• Misdirect - talk about topics related to your word",
       "• Stay alert - anyone could be your assassin"
     ]
@@ -199,7 +248,24 @@
     "submit": "Submit",
     "loading": "Loading...",
     "creating": "Creating...",
-    "joining": "Joining..."
+    "joining": "Joining...",
+    "groupName": "Group Name",
+    "enterGroupName": "Enter group name",
+    "createAGame": "Create a Game",
+    "startNewGame": "Start a new game and invite others",
+    "joinAGame": "Join a Game",
+    "enterGameCode": "Enter a game code to join an existing game",
+    "enter4DigitCode": "Enter 4-digit code",
+    "allowWordRedrawsAfterKill": "Allow word redraws after kill",
+    "allowWordRedrawsDescription": "If checked, players can redraw their targets' words even after kills have occurred",
+    "hidePlayerLeaderboard": "Hide player leaderboard",
+    "hideLeaderboardDescription": "If checked, players won't see who's alive/dead during the game, adding mystery",
+    "validation": {
+      "nameMinLength": "Name must be at least 2 characters",
+      "gameNameMinLength": "Game name must be at least 2 characters",
+      "joinCodeLength": "Join code must be exactly 4 characters",
+      "joinCodeFormat": "Only letters and numbers are allowed"
+    }
   },
   "errors": {
     "gameNotFound": "Game not found",
@@ -207,7 +273,10 @@
     "gameAlreadyStarted": "Game has already started",
     "notAuthorized": "Not authorized",
     "somethingWentWrong": "Something went wrong",
-    "tryAgain": "Please try again"
+    "tryAgain": "Please try again",
+    "gameNotFoundTitle": "Game Not Found",
+    "gameNotFoundDescription": "The game you're looking for doesn't exist.",
+    "backToHome": "Back to Home"
   },
   "footer": {
     "about": "About",
@@ -215,6 +284,42 @@
     "blog": "Blog",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
-    "allRightsReserved": "All rights reserved"
+    "allRightsReserved": "All rights reserved",
+    "madeWith": "Made with",
+    "by": "by",
+    "inNYC": "in NYC",
+    "copyright": "© {year} Glacier Labs. All rights reserved.",
+    "github": "GitHub"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "submitting": "Submitting...",
+    "close": "Close"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Our latest news, updates, and stories.",
+    "postsComingSoon": "Posts coming soon!",
+    "viewArticle": "View Article",
+    "seeAllPosts": "See all posts",
+    "by": "By",
+    "readyToPlay": "Ready to play Word Assassins?",
+    "readyToPlayDescription": "The ultimate social deduction game that combines stealth, strategy, and vocabulary. Eliminate your targets, stay alive, and become the last assassin standing.",
+    "startPlaying": "Start Playing"
+  },
+  "layout": {
+    "skipToMainContent": "Skip to main content",
+    "menu": "Menu",
+    "setupRequired": "Setup required"
   }
 }

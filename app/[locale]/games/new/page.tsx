@@ -25,15 +25,19 @@ import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import { toast } from "@/hooks/use-toast";
-
-const formSchema = z.object({
-  gameName: z.string().min(2, "Game name must be at least 2 characters"),
-  playerName: z.string().min(2, "Name must be at least 2 characters"),
-  redrawsAlwaysAllowed: z.boolean().default(false),
-  hideLeaderboard: z.boolean().default(false),
-});
+import { useTranslations } from "next-intl";
 
 export default function CreateGamePage() {
+  const t = useTranslations("forms");
+  const tCommon = useTranslations("common");
+  const tErrors = useTranslations("errors");
+
+  const formSchema = z.object({
+    gameName: z.string().min(2, t("validation.gameNameMinLength")),
+    playerName: z.string().min(2, t("validation.nameMinLength")),
+    redrawsAlwaysAllowed: z.boolean().default(false),
+    hideLeaderboard: z.boolean().default(false),
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,8 +57,8 @@ export default function CreateGamePage() {
       console.log("here 2");
       console.log(error);
       toast({
-        title: "Error",
-        description: error.response?.data?.error || "Failed to create game",
+        title: tCommon("error"),
+        description: error.response?.data?.error || tErrors("somethingWentWrong"),
         variant: "destructive",
       });
     },
@@ -71,8 +75,8 @@ export default function CreateGamePage() {
     <div className="flex-1 w-full flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Create a Game</CardTitle>
-          <CardDescription>Start a new game and invite others</CardDescription>
+          <CardTitle>{t("createAGame")}</CardTitle>
+          <CardDescription>{t("startNewGame")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -85,10 +89,10 @@ export default function CreateGamePage() {
                 name="gameName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Group Name</FormLabel>
+                    <FormLabel>{t("groupName")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter group name"
+                        placeholder={t("enterGroupName")}
                         {...field}
                         autoComplete="off"
                       />
@@ -102,10 +106,10 @@ export default function CreateGamePage() {
                 name="playerName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Your Name</FormLabel>
+                    <FormLabel>{t("hostName")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your name"
+                        placeholder={t("enterYourName")}
                         {...field}
                         autoComplete="off"
                         autoCorrect="off"
@@ -128,10 +132,9 @@ export default function CreateGamePage() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Allow word redraws after kill</FormLabel>
+                      <FormLabel>{t("allowWordRedrawsAfterKill")}</FormLabel>
                       <p className="text-sm text-muted-foreground">
-                        If checked, players can redraw their targets' words even
-                        after kills have occurred
+                        {t("allowWordRedrawsDescription")}
                       </p>
                     </div>
                   </FormItem>
@@ -149,10 +152,9 @@ export default function CreateGamePage() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Hide player leaderboard</FormLabel>
+                      <FormLabel>{t("hidePlayerLeaderboard")}</FormLabel>
                       <p className="text-sm text-muted-foreground">
-                        If checked, players won't see who's alive/dead during
-                        the game, adding <i>mystery</i>
+                        {t("hideLeaderboardDescription")}
                       </p>
                     </div>
                   </FormItem>
@@ -162,10 +164,10 @@ export default function CreateGamePage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating...
+                    {t("creating")}
                   </>
                 ) : (
-                  "Create Game"
+                  t("createGame")
                 )}
               </Button>
             </form>

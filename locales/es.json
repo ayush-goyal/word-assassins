@@ -55,12 +55,10 @@
     "backToSignIn": "Volver a iniciar sesión",
     "updatePassword": "Actualizar contraseña",
     "newPassword": "Nueva contraseña",
-    "confirmPassword": "Confirmar contraseña",
     "resetPasswordSubtitleAccount": "Por favor ingresa tu nueva contraseña",
     "resettingPassword": "Restableciendo contraseña...",
     "signingIn": "Iniciando sesión...",
     "creatingAccount": "Creando cuenta...",
-    "sendingResetLink": "Enviando...",
     "updating": "Actualizando...",
     "emailPlaceholder": "tu@ejemplo.com",
     "passwordPlaceholder": "Ingresa contraseña",
@@ -144,7 +142,58 @@
       "second": "2°",
       "third": "3°",
       "other": "{place}°"
-    }
+    },
+    "loading": "Cargando...",
+    "errorLoading": "Error al Cargar el Juego",
+    "refreshHint": "Por favor intenta actualizar la página o contacta al soporte si el problema persiste.",
+    "theirWord": "Su palabra:",
+    "actions": "Acciones",
+    "gameMembers": "Miembros del Juego",
+    "host": "Anfitrión",
+    "player": "Jugador",
+    "kill": "Eliminación",
+    "kills": "Eliminaciones",
+    "howToPlay": "Cómo Jugar",
+    "status": {
+      "waiting": "Esperando",
+      "active": "Activo",
+      "finished": "Finalizado"
+    },
+    "startGameSuccess": "¡Juego iniciado!",
+    "startGameSuccessDescription": "El juego ha sido iniciado exitosamente.",
+    "startGameError": "Error al iniciar el juego",
+    "starting": "Iniciando...",
+    "markAsKilledSuccess": "Has sido marcado como eliminado",
+    "markAsKilledSuccessDescription": "Serás removido del juego",
+    "markAsKilledError": "Error al marcar como eliminado",
+    "markYourselfAsKilled": "Marcarte como Eliminado",
+    "markingAsKilled": "Marcando como eliminado...",
+    "areYouSure": "¿Estás seguro?",
+    "markAsKilledConfirm": "Esta acción no se puede deshacer. Esto te marcará como eliminado y te removerá del juego.",
+    "yesMarkAsKilled": "Sí, marcar como eliminado",
+    "wordRedrawnSuccess": "Palabra cambiada exitosamente",
+    "wordRedrawnSuccessDescription": "Tu nueva palabra es: {newWord}",
+    "wordRedrawError": "Error al cambiar la palabra",
+    "redrawing": "Cambiando...",
+    "redrawsLocked": "Cambios bloqueados",
+    "noRedrawsLeft": "No quedan cambios",
+    "redrawLeft": "restantes",
+    "redrawDescriptionNoRedraws": "Has usado todos tus cambios para este juego.",
+    "redrawDescriptionLocked": "Lo siento, no puedes cambiar tu palabra en este momento.",
+    "redrawDescriptionAlwaysAllowed": "Esto seleccionará una nueva palabra aleatoria para tu objetivo. Solo puedes hacer esto {remainingRedraws} {time} más.",
+    "redrawDescriptionBeforeKills": "Esto seleccionará una nueva palabra aleatoria para tu objetivo. Solo puedes hacer esto {remainingRedraws} {time} más, y solo antes de que ocurran eliminaciones en el juego.",
+    "time": "vez",
+    "times": "veces",
+    "yesRedrawWord": "Sí, cambiar palabra",
+    "playerRemovedSuccess": "Jugador removido del juego",
+    "playerRemoveError": "Error al remover jugador",
+    "replayGameDescription": "Crear un nuevo juego con los mismos jugadores. El juego comenzará en estado de espera.",
+    "newGameName": "Nombre del Nuevo Juego",
+    "replayGameSuccess": "¡Juego repetido exitosamente!",
+    "replayGameSuccessDescription": "Redirigiendo al nuevo juego...",
+    "replayGameError": "Error al repetir el juego",
+    "copyJoinLinkCopied": "¡Copiado!",
+    "copyJoinLinkText": "Copiar enlace de unión"
   },
   "gameInstructions": {
     "setup": "Configuración",
@@ -199,7 +248,24 @@
     "submit": "Enviar",
     "loading": "Cargando...",
     "creating": "Creando...",
-    "joining": "Uniéndose..."
+    "joining": "Uniéndose...",
+    "groupName": "Nombre del Grupo",
+    "enterGroupName": "Ingresa el nombre del grupo",
+    "createAGame": "Crear un Juego",
+    "startNewGame": "Inicia un nuevo juego e invita a otros",
+    "joinAGame": "Unirse a un Juego",
+    "enterGameCode": "Ingresa un código de juego para unirte a un juego existente",
+    "enter4DigitCode": "Ingresa código de 4 dígitos",
+    "allowWordRedrawsAfterKill": "Permitir cambios de palabra después de eliminación",
+    "allowWordRedrawsDescription": "Si está marcado, los jugadores pueden cambiar las palabras de sus objetivos incluso después de que ocurran eliminaciones",
+    "hidePlayerLeaderboard": "Ocultar tabla de posiciones de jugadores",
+    "hideLeaderboardDescription": "Si está marcado, los jugadores no verán quién está vivo/muerto durante el juego, añadiendo misterio",
+    "validation": {
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "gameNameMinLength": "El nombre del juego debe tener al menos 2 caracteres",
+      "joinCodeLength": "El código de acceso debe tener exactamente 4 caracteres",
+      "joinCodeFormat": "Solo se permiten letras y números"
+    }
   },
   "errors": {
     "gameNotFound": "Juego no encontrado",
@@ -207,7 +273,10 @@
     "gameAlreadyStarted": "El juego ya ha comenzado",
     "notAuthorized": "No autorizado",
     "somethingWentWrong": "Algo salió mal",
-    "tryAgain": "Por favor intenta de nuevo"
+    "tryAgain": "Por favor intenta de nuevo",
+    "gameNotFoundTitle": "Juego No Encontrado",
+    "gameNotFoundDescription": "El juego que buscas no existe.",
+    "backToHome": "Volver al Inicio"
   },
   "footer": {
     "about": "Acerca de",
@@ -215,6 +284,42 @@
     "blog": "Blog",
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos de Servicio",
-    "allRightsReserved": "Todos los derechos reservados"
+    "allRightsReserved": "Todos los derechos reservados",
+    "madeWith": "Hecho con",
+    "by": "por",
+    "inNYC": "en NYC",
+    "copyright": "© {year} Glacier Labs. Todos los derechos reservados.",
+    "github": "GitHub"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "submitting": "Enviando...",
+    "close": "Cerrar"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Nuestras últimas noticias, actualizaciones e historias.",
+    "postsComingSoon": "¡Próximamente publicaciones!",
+    "viewArticle": "Ver Artículo",
+    "seeAllPosts": "Ver todas las publicaciones",
+    "by": "Por",
+    "readyToPlay": "¿Listo para jugar Asesinos de Palabras?",
+    "readyToPlayDescription": "El juego definitivo de deducción social que combina sigilo, estrategia y vocabulario. Elimina a tus objetivos, mantente vivo y conviértete en el último asesino en pie.",
+    "startPlaying": "Empezar a Jugar"
+  },
+  "layout": {
+    "skipToMainContent": "Saltar al contenido principal",
+    "menu": "Menú",
+    "setupRequired": "Configuración requerida"
   }
 }

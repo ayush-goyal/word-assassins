@@ -17,6 +17,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Markdown from "react-markdown";
+import { getTranslations } from "next-intl/server";
 
 interface PostPageProps {
   params: Promise<{
@@ -78,6 +79,7 @@ function formatAuthors(authors: string[]): string {
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
+  const t = await getTranslations("blog");
 
   if (!post) {
     notFound();
@@ -94,7 +96,7 @@ export default async function PostPage({ params }: PostPageProps) {
           )}
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
-          See all posts
+          {t("seeAllPosts")}
         </Link>
       </div>
       <div>
@@ -111,7 +113,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </h1>
         {post.authors?.length ? (
           <div className="mt-4 flex items-center text-sm">
-            <p className="font-medium">By {formatAuthors(post.authors)}</p>
+            <p className="font-medium">{t("by")} {formatAuthors(post.authors)}</p>
           </div>
         ) : null}
       </div>
@@ -142,15 +144,13 @@ export default async function PostPage({ params }: PostPageProps) {
             <MessageSquare className="h-8 w-8 text-muted-foreground transform -rotate-6" />
             <Swords className="h-8 w-8 text-primary transform" />
           </div>
-          <h3 className="text-2xl font-bold">Ready to play Word Assassins?</h3>
+          <h3 className="text-2xl font-bold">{t("readyToPlay")}</h3>
           <p className="text-muted-foreground max-w-[42rem]">
-            The ultimate social deduction game that combines stealth, strategy,
-            and vocabulary. Eliminate your targets, stay alive, and become the
-            last assassin standing.
+            {t("readyToPlayDescription")}
           </p>
           <Button size="lg" asChild>
             <Link href="/sign-up" className="gap-2">
-              Start Playing
+              {t("startPlaying")}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </Button>
@@ -166,7 +166,7 @@ export default async function PostPage({ params }: PostPageProps) {
           )}
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
-          See all posts
+          {t("seeAllPosts")}
         </Link>
       </div>
     </article>

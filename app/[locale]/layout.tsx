@@ -128,6 +128,8 @@ export default async function LocaleLayout({
   // Enable static rendering
   setRequestLocale(locale);
 
+  const tLayout = await getTranslations("layout");
+
   // JSON-LD for SEO (https://developers.google.com/search/docs/appearance/site-names)
   const jsonLd = {
     "@context": "https://schema.org",
@@ -157,7 +159,7 @@ export default async function LocaleLayout({
                 href="#main-content"
                 className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4"
               >
-                Skip to main content
+                {tLayout("skipToMainContent")}
               </a>
               <div className="min-h-screen flex flex-col">
                 <HeaderAuth />
