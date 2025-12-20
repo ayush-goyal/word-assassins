@@ -5,7 +5,7 @@ import { routing } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const intlResponse = intlMiddleware(request);
   return await updateSession(request, intlResponse);
 }
@@ -29,3 +29,4 @@ export const config = {
     "/((?!api|_next/static|_next/image|_vercel|favicon.*|android-chrome.*|apple-touch-icon.*|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
+
