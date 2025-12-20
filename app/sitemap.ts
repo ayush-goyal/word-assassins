@@ -74,13 +74,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ] as const;
 
-  const posts = getAllPosts();
-  const blogPages = posts.map((post) => ({
-    path: post.slug,
-    priority: 0.8,
-    changeFrequency: "weekly" as const,
-    lastModified: post.date.toJSDate(),
-  }));
+  const blogPages: Array<{
+    path: string;
+    priority: number;
+    changeFrequency: "weekly";
+    lastModified: Date;
+  }> = [];
+
+  for (const locale of routing.locales) {
+    const posts = getAllPosts(locale);
+    for (const post of posts) {
+      blogPages.push({
+        path: post.slug,
+        priority: 0.8,
+        changeFrequency: "weekly" as const,
+        lastModified: post.date.toJSDate(),
+      });
+    }
+  }
 
   return generateSitemapEntries([...staticPages, ...blogPages]);
 }
