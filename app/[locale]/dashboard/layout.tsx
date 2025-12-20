@@ -7,7 +7,7 @@ export default async function DashboardLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: (typeof routing.locales)[number] }>;
+  params: Promise<{ locale: string }>;
 }) {
   const supabase = await createClient();
   const { locale } = await params;

@@ -4,7 +4,7 @@ import type messages from "@/locales/en.json";
 
 declare module "next-intl" {
   interface AppConfig {
-    Locale: (typeof routing.locales)[number];
+    Locale: string;
     Messages: typeof messages;
     Formats: typeof formats;
   }
