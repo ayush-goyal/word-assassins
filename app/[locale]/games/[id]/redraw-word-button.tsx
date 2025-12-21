@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Game, PlayerInGame, PlayerStatus } from "@prisma/client";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { translateWord } from "@/lib/master-word-list";
 
 type GameWithPlayers = Game & {
   players: PlayerInGame[];
@@ -36,6 +37,7 @@ export default function RedrawWordButton({
   const toast = useToast();
   const t = useTranslations("game");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   const redraws = currentPlayer.redraws;
   const remainingRedraws = 2 - redraws;
@@ -54,9 +56,12 @@ export default function RedrawWordButton({
       setIsLoading(true);
     },
     onSuccess: (data) => {
+      const translatedWord = translateWord(data.newWord, locale);
       toast.toast({
         title: t("wordRedrawnSuccess"),
-        description: t("wordRedrawnSuccessDescription", { newWord: data.newWord }),
+        description: t("wordRedrawnSuccessDescription", {
+          newWord: translatedWord,
+        }),
         variant: "default",
       });
       utils.invalidateQueries(["game", game.id]);
@@ -98,9 +103,15 @@ export default function RedrawWordButton({
 
     const timeText = remainingRedraws === 1 ? t("time") : t("times");
     if (game.redrawsAlwaysAllowed) {
-      return t("redrawDescriptionAlwaysAllowed", { remainingRedraws, time: timeText });
+      return t("redrawDescriptionAlwaysAllowed", {
+        remainingRedraws,
+        time: timeText,
+      });
     } else {
-      return t("redrawDescriptionBeforeKills", { remainingRedraws, time: timeText });
+      return t("redrawDescriptionBeforeKills", {
+        remainingRedraws,
+        time: timeText,
+      });
     }
   };
 

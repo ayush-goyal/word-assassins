@@ -67,6 +67,8 @@ export async function POST(
         name,
         joinCode: generateGameCode(),
         creatorId: user.id,
+        redrawsAlwaysAllowed: existingGame.redrawsAlwaysAllowed,
+        hideLeaderboard: existingGame.hideLeaderboard,
         players: {
           create: existingGame.players.map((player) => ({
             userId: player.userId,

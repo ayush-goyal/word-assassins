@@ -18,7 +18,8 @@ import { useQuery } from "react-query";
 import { use } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import axios from "axios";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { translateWord } from "@/lib/master-word-list";
 
 async function fetchGameData(gameId: string): Promise<
   Game & {
@@ -39,6 +40,7 @@ export default function GamePage({
   const { user } = useAuth();
   const gameInstructions = useGameInstructions();
   const t = useTranslations("game");
+  const locale = useLocale();
 
   const {
     data: game,
@@ -136,7 +138,9 @@ export default function GamePage({
                     <p className="text-sm text-muted-foreground">
                       {t("theirWord")}{" "}
                       <span className="font-bold">
-                        {currentPlayerTarget.word}
+                        {currentPlayerTarget.word
+                          ? translateWord(currentPlayerTarget.word, locale)
+                          : ""}
                       </span>
                     </p>
                   </div>

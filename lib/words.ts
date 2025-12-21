@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { WORD_LIST } from "./master-word-list";
 
+// Always use English words for assignment (stored in DB)
+// Translation happens at display time based on user locale
 export function getRandomWords(count: number): string[] {
   return _.shuffle(WORD_LIST).slice(0, count);
 }
